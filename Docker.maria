@@ -1,0 +1,48 @@
+FROM debian:stable
+LABEL maintainer "Remi suinot <remi@suinot.org>"
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV INITRD No                         
+
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y locales netcat;
+
+RUN echo "locales locales/default_environment_locale select fr_FR.UTF-8" | debconf-set-selections \
+    && echo "locales locales/locales_to_be_generated multiselect 'fr_FR.UTF-8 UTF-8'" | debconf-set-selections \
+    && echo "Europe/Paris" > /etc/timezone && dpkg-reconfigure -f noninteractive tzdata && locale-gen --purge en_US.UTF-8  \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY ./01proxy  /etc/apt/apt.conf.d/01proxy 
+COPY ./detect_proxy.sh /etc/apt 
+
+RUN apt-get update \
+    && apt-get upgrade \
+    && apt-get install --no-install-recommends -y \
+# -- installation des paquets utiles
+    software-properties-common \
+    dirmngr \
+    gnupg \
+    gnupg2 \
+    gnupg1 \
+    procps \
+    vim \
+    && apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xF1656F24C74CD1D8 \
+    && add-apt-repository 'deb [arch=amd64] http://fr.mirror.babylon.network/mariadb/repo/10.2/debian stretch main' \
+    && apt-get update \ 
+    && apt-get install --no-install-recommends --no-install-suggests -y mariadb-server \
+# fin des installations: on purges pour gagner de la place
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm /var/log/dpkg.log
+
+
+VOLUME /var/lib/mysql  
+
+EXPOSE 3306
+
+COPY ./maria-entrypoint.sh /usr/local/sbin/
+RUN chown 0.0 /usr/local/sbin/maria-entrypoint.sh
+ENTRYPOINT ["/usr/local/sbin/maria-entrypoint.sh"]
+
+CMD ["mysqld_safe"]
+

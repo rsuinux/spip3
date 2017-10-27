@@ -1,0 +1,73 @@
+version: '3'
+services:
+  php:
+    image: php
+    environment:
+      - TZ=Europe/Paris
+      - LANG='fr_FR.UTF-8'
+    volumes:
+      - /tmp/metar.txt:/tmp/metar.txt
+      - /tmp/Core-0.txt:/tmp/Core-0.txt
+      - /tmp/Temp3.txt:/tmp/Temp3.txt
+      - /tmp/Uptime.txt:/tmp/Uptime.txt
+      - /home/www/:/var/www/
+    ports:
+      - 9000:9000
+    networks:
+      - network_serveur_nginx
+  
+  mariadb:
+    image: maria
+    volumes:
+      - ./etc/mysql.conf/my.cnf:/etc/mysql/my.cnf
+      - ./maria:/var/lib/mysql
+      - /var/log/mysql/:/var/log/mysql/:rw
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=passdelamortquitue
+      - MYSQL_USER=spip
+      - MYSQL_PASSWORD=passdelaviequiressussite
+      - MYSQL_DATABASE=spip
+    networks:
+      - network_serveur_nginx
+
+  nginx:
+    image: nginx
+    environment:
+      - TZ=Europe/Paris
+      - LANG='fr_FR.UTF-8'
+      - SPIP_DB_SERVER=mysql      
+      - SPIP_DB_HOST=172.20.0.2           
+      - SPIP_DB_LOGIN=spip     
+      - SPIP_DB_PASS=passdelaviequiressussite
+      - SPIP_DB_NAME=spip                                                  
+      - SPIP_DB_PREFIX=spip                                                  
+      - SPIP_ADMIN_NAME=remi                                                 
+      - SPIP_ADMIN_LOGIN=remi                                       
+      - SPIP_ADMIN_EMAIL=remi@suinot.org                             
+      - SPIP_ADMIN_PASS=passquisertpeutetrepas
+    ports:
+      - 80:80
+      - 443:443 
+    volumes:
+      - ./etc/nginx/nginx.conf:/etc/nginx/nginx.conf 
+      - ./etc/nginx/conf.d:/etc/nginx/conf.d 
+      - ./etc/nginx/sites-enabled:/etc/nginx/sites-enabled 
+      - ./etc/nginx/sites-available:/etc/nginx/sites-available 
+      - /tmp/metar.txt:/tmp/metar.txt
+      - /tmp/Core-0.txt:/tmp/Core-0.txt
+      - /tmp/Temp3.txt:/tmp/Temp3.txt
+      - /tmp/Uptime.txt:/tmp/Uptime.txt
+      - /home/www:/var/www/ 
+      - /var/log/nginx/:/var/log/nginx/
+    links:
+      - php:php
+      - mariadb:mariadb
+    networks:
+      - network_serveur_nginx
+
+networks:
+        network_serveur_nginx:
+           driver: bridge
+
