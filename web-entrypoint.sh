@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -ex; 
 # 1ere version: 01/09/2017
-# last version: 26/10/2017
+# last version: 01/11/2017
 # "Remi suinot <remi@suinot.org>"
 # -------------------------------------
 

@@ -6,10 +6,6 @@ services:
       - TZ=Europe/Paris
       - LANG='fr_FR.UTF-8'
     volumes:
-      - /tmp/metar.txt:/tmp/metar.txt
-      - /tmp/Core-0.txt:/tmp/Core-0.txt
-      - /tmp/Temp3.txt:/tmp/Temp3.txt
-      - /tmp/Uptime.txt:/tmp/Uptime.txt
       - /home/www/:/var/www/
     ports:
       - 9000:9000
@@ -45,7 +41,7 @@ services:
       - SPIP_DB_PREFIX=spip                                                  
       - SPIP_ADMIN_NAME=remi                                                 
       - SPIP_ADMIN_LOGIN=remi                                       
-      - SPIP_ADMIN_EMAIL=remi@suinot.org                             
+      - SPIP_ADMIN_EMAIL=abcd@mondomaine.org                         
       - SPIP_ADMIN_PASS=passquisertpeutetrepas
     ports:
       - 80:80
@@ -55,10 +51,6 @@ services:
       - ./etc/nginx/conf.d:/etc/nginx/conf.d 
       - ./etc/nginx/sites-enabled:/etc/nginx/sites-enabled 
       - ./etc/nginx/sites-available:/etc/nginx/sites-available 
-      - /tmp/metar.txt:/tmp/metar.txt
-      - /tmp/Core-0.txt:/tmp/Core-0.txt
-      - /tmp/Temp3.txt:/tmp/Temp3.txt
-      - /tmp/Uptime.txt:/tmp/Uptime.txt
       - /home/www:/var/www/ 
       - /var/log/nginx/:/var/log/nginx/
     links:

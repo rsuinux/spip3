@@ -1,4 +1,4 @@
-!#/bin/sh
+#!/usr/bin/env bash
 
 # execution en séquence, des créations des images 
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -ex
 
 sed "/mysql/d" /etc/passwd > /etc/passwd

@@ -16,9 +16,8 @@ COPY ./01proxy  /etc/apt/apt.conf.d/01proxy
 COPY ./detect_proxy.sh /etc/apt 
 
 RUN apt-get update \
-    && apt-get upgrade \
+    && apt-get upgrade -y\
     && apt-get install --no-install-recommends -y \
-# -- installation des paquets utiles
     software-properties-common \
     dirmngr \
     gnupg \
@@ -30,11 +29,9 @@ RUN apt-get update \
     && add-apt-repository 'deb [arch=amd64] http://fr.mirror.babylon.network/mariadb/repo/10.2/debian stretch main' \
     && apt-get update \ 
     && apt-get install --no-install-recommends --no-install-suggests -y mariadb-server \
-# fin des installations: on purges pour gagner de la place
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm /var/log/dpkg.log
-
 
 VOLUME /var/lib/mysql  
 

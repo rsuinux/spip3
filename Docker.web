@@ -16,26 +16,21 @@ COPY ./01proxy  /etc/apt/apt.conf.d/01proxy
 COPY ./detect_proxy.sh /etc/apt 
 
 RUN apt-get update \
-    && apt-get upgrade \
-# Install gd
+    && apt-get upgrade -y \
     && apt-get install --no-install-recommends -y \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libpng16-16 \
     libpng-dev \
     libpng-tools \
-# Install mysql and sqlite
     mysql-client \
     libsqlite3-dev \
     libsqlite3-0 \
-# Install curl
     curl \
     libcurl3 \
     libcurl3-dev \
-# Install Imagick
     libmagickwand-dev \
     imagemagick \
-# Install utils and remove apt-get cache
     curl \
     unzip \
     gettext-base \
@@ -56,11 +51,9 @@ RUN curl http://nginx.org/packages/keys/nginx_signing.key > /tmp/tmp.key \
      && apt-get clean \
      && rm -rf /var/lib/apt/lists/* \
      && rm /var/log/dpkg.log \
-     # forward request and error logs to docker log collector
      && ln -sf /dev/stdout /var/log/nginx/access.log   \
      && ln -sf /dev/stderr /var/log/nginx/error.log 
   
-
 VOLUME ["/var/www/"]
 
 EXPOSE 80

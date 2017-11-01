@@ -19,7 +19,7 @@ COPY ./01proxy  /etc/apt/apt.conf.d/01proxy
 COPY ./detect_proxy.sh /etc/apt-get   
                                             
 RUN apt-get update  \
-    && apt-get upgrade \
+    && apt-get upgrade -y \
     && apt-get --no-install-recommends --no-install-suggests -y  install \
     imagemagick \
     vim
