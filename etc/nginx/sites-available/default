@@ -1,9 +1,7 @@
 server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
-    server_name _;
-    root /home/www/spip/;
+    listen 80;
+    server_name _ ;
+    root /var/www/spip/;
 
     index index.php index.html;
     error_log  /var/log/nginx/error.log;
@@ -26,7 +24,7 @@ server {
     # page 404 customisée
     error_page 404 /404.html;
     location = /404.html {
-        root /home/www/error_custom/;
+        root /var/www/error_custom/;
         internal;
     }
 }

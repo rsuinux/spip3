@@ -6,6 +6,8 @@ Pour l'utiliser:
 
   * récupérer les fichiers
 
+  * récupérer (ou créer) le répertoire etc. Il contient les fichiers de configurations de mariadb et de nginx. Pour le serveur web, c'est une configuration minimal, mais qui fonctionne.
+  
   * dans le même répertoire, créer un sous- répertoire maria (il contiendra la base de donnée -> modifiable dans le fichier docker-compose.yml
 
   * modifier les valeur: 
