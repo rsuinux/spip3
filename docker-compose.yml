@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 services:
   php:
     image: php
@@ -10,7 +10,8 @@ services:
     ports:
       - 9000:9000
     networks:
-      - network_serveur_nginx
+      network_serveur_nginx:
+        ipv4_address: 172.21.0.10
   
   mariadb:
     image: maria
@@ -21,12 +22,13 @@ services:
     ports:
       - 3306:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=passdelamortquitue
+      - MYSQL_ROOT_PASSWORD=totolehero
       - MYSQL_USER=spip
-      - MYSQL_PASSWORD=passdelaviequiressussite
+      - MYSQL_PASSWORD=db_pass-1789&moi
       - MYSQL_DATABASE=spip
     networks:
-      - network_serveur_nginx
+      network_serveur_nginx:
+        ipv4_address: 172.21.0.20
 
   nginx:
     image: nginx
@@ -36,30 +38,33 @@ services:
       - SPIP_DB_SERVER=mysql      
       - SPIP_DB_HOST=172.20.0.2           
       - SPIP_DB_LOGIN=spip     
-      - SPIP_DB_PASS=passdelaviequiressussite
+      - SPIP_DB_PASS=db_pass-1789&moi
       - SPIP_DB_NAME=spip                                                  
       - SPIP_DB_PREFIX=spip                                                  
       - SPIP_ADMIN_NAME=remi                                                 
       - SPIP_ADMIN_LOGIN=remi                                       
-      - SPIP_ADMIN_EMAIL=abcd@mondomaine.org                         
-      - SPIP_ADMIN_PASS=passquisertpeutetrepas
     ports:
-      - 80:80
+      - 80:78
       - 443:443 
     volumes:
       - ./etc/nginx/nginx.conf:/etc/nginx/nginx.conf 
       - ./etc/nginx/conf.d:/etc/nginx/conf.d 
       - ./etc/nginx/sites-enabled:/etc/nginx/sites-enabled 
       - ./etc/nginx/sites-available:/etc/nginx/sites-available 
+      - /etc/letsencrypt/live/www.suinot.org/:/etc/letsencrypt/live/www.suinot.org/
       - /home/www:/var/www/ 
       - /var/log/nginx/:/var/log/nginx/
     links:
       - php:php
       - mariadb:mariadb
     networks:
-      - network_serveur_nginx
+      network_serveur_nginx:
+        ipv4_address: 172.21.0.30
 
 networks:
-        network_serveur_nginx:
-           driver: bridge
-
+    network_serveur_nginx:
+      ipam:
+        driver: default
+        config:
+          - subnet: 172.21.0.0/16
+            gateway: 172.21.0.1

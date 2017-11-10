@@ -22,8 +22,14 @@ Pour l'utiliser:
   * Créer les container avec ./Redockerise.sh  (c'est un petit script qui évite de tout retaper à la main)
   * Si tout c'est bien passé, vous pouvez lancer le tout avec "docker-compose up"
 
-Petite précision: avant de vous connecter à la base de donnée lors de la création du site, rechercher l'adresse du container mariadb avec "docker inspect nginxspip3_mariadb_1 | grep IPAddress"
+Base de donnée avec SPIP: dans le panneau de configuration, à la demande du type de base, indiquer mysql, et pour l'adresse de connexion, mettez 172.21.0.20.
+Les containers sont configurés pour avoir toujours les même adresses ip:
 
+* php-fpm: 172.21.0.10
+* mariadb: 172.21.0.20
+* nginx:   172.21.0.30 (en intern, après, le port 80 est exposé sur 0.0.0.0)
+
+ 
 Normalement, cela doit fonctionner.
 
 
