@@ -23,6 +23,14 @@ function installation {
   chown -R www-data:www-data *
 
 }
+
+function mise_a_jour {
+  # le script ne fait que télécharger spip_loader
+  # a vous de l'utiliser une fois le container redémaré
+  # cf: https://www.spip.net/fr_article5705.html
+  curl -o spip_loader.php https://www.spip.net/spip-dev/INSTALL/spip_loader.php
+  chown www-data. spip_loader.php
+}
 # 
 # **** fin des fonctions **** #
 
@@ -35,6 +43,9 @@ if [ -d spip ]; then
     # mais s'il est vide, on télécharge 
     cd ../
     installation
+  else
+    # s'il est plein, on récupère spip_loader
+    mise_a_jour
   fi
 else
   # pas de répertoire, nous sommes sur une première installation
