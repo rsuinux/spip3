@@ -27,6 +27,7 @@ RUN apt-get update \
     libsqlite3-dev \
     libsqlite3-0 \
     curl \
+    ca-certificates \
     libcurl3 \
     libcurl3-dev \
     libmagickwand-dev \
@@ -56,7 +57,7 @@ RUN curl http://nginx.org/packages/keys/nginx_signing.key > /tmp/tmp.key \
   
 VOLUME ["/var/www/"]
 
-EXPOSE 80
+EXPOSE 78 440
 
 STOPSIGNAL SIGTERM
 
