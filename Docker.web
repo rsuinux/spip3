@@ -57,7 +57,7 @@ RUN curl http://nginx.org/packages/keys/nginx_signing.key > /tmp/tmp.key \
   
 VOLUME ["/var/www/"]
 
-EXPOSE 78 440
+EXPOSE 80 443
 
 STOPSIGNAL SIGTERM
 
